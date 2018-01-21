@@ -5,7 +5,7 @@ package GameModel.Environment;
  */
 public class PlantOrganism extends Organism {
 
-    public PlantOrganism(int id) {
-        super(id, Math.random(), Math.random(), 0.0, 0.0, 5);
+    public PlantOrganism(int id, int size) {
+        super(id, Math.random(), Math.random(), 0.0, 0.0, size);
     }
 }

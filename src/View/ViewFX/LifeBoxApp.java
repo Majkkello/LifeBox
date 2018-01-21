@@ -43,19 +43,49 @@ public class LifeBoxApp extends Application implements LifeBoxView, ModelEnviron
         return root;
     }
 
+    GraphicalObject findPlantsWithId(int id) {
+        for (GraphicalObject go : plants) {
+            if (go.getId() == id)
+                return go;
+        }
+        return null;
+    }
+
+    GraphicalObject findHerbivoresWithId(int id) {
+        for (GraphicalObject go : herbivores) {
+            if (go.getId() == id)
+                return go;
+        }
+        return null;
+    }
+
     @Override
-    public void updateState(ArrayList<HerbivoreOrganism> newHerbivores, ArrayList<PlantOrganism> newPlants) {
+    public void updateState(ArrayList<HerbivoreOrganism> newHerbivores,
+                            ArrayList<PlantOrganism> newPlants,
+                            ArrayList<HerbivoreOrganism> newDeadHerbivores,
+                            ArrayList<PlantOrganism> newDeadPlants) {
+
         for (Organism org : newPlants) {
-            plants.add(new Plant(org.getId()));
+            plants.add(new Plant(org.getId(), org.getSize()));
             addGraphicalObject(plants.get(plants.size() - 1),
                     org.getPositionX() * root.getPrefWidth(),
                     org.getPositionY() * root.getPrefHeight());
         }
         for (Organism org : newHerbivores) {
-            herbivores.add(new Herbivore(org.getId()));
+            herbivores.add(new Herbivore(org.getId(), org.getSize()));
             addGraphicalObject(herbivores.get(herbivores.size() - 1),
                     org.getPositionX() * root.getPrefWidth(),
                     org.getPositionY() * root.getPrefHeight());
+        }
+        for (Organism org : newDeadHerbivores) {
+            GraphicalObject go = findHerbivoresWithId(org.getId());
+            root.getChildren().remove(go.getView());
+            herbivores.remove(go);
+        }
+        for (Organism org : newDeadPlants) {
+            GraphicalObject go = findPlantsWithId(org.getId());
+            root.getChildren().remove(go.getView());
+            plants.remove(go);
         }
     }
 
@@ -112,6 +142,7 @@ public class LifeBoxApp extends Application implements LifeBoxView, ModelEnviron
             updateCoords(go);
         }
         // draws objects in new positions
+
     }
 
     public void addGraphicalObject(GraphicalObject obj, double x, double y) {
@@ -122,13 +153,13 @@ public class LifeBoxApp extends Application implements LifeBoxView, ModelEnviron
 
     public void addAllGraphicalObjects() {
         for (Organism org : environment.getPlants()) {
-            plants.add(new Plant(org.getId()));
+            plants.add(new Plant(org.getId(), org.getSize()));
             addGraphicalObject(plants.get(plants.size() - 1),
                     org.getPositionX() * root.getPrefWidth(),
                     org.getPositionY() * root.getPrefHeight());
         }
         for (Organism org : environment.getHerbivores()) {
-            herbivores.add(new Herbivore(org.getId()));
+            herbivores.add(new Herbivore(org.getId(), org.getSize()));
             addGraphicalObject(herbivores.get(herbivores.size() - 1),
                     org.getPositionX() * root.getPrefWidth(),
                     org.getPositionY() * root.getPrefHeight());

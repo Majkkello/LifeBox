@@ -10,11 +10,13 @@ public class GraphicalObject {
     private int id;
     private Node view;
     private Point2D velocity = new Point2D(0, 0);
+    private int size;
 
     private boolean alive = true;
 
-    public GraphicalObject(int id, Node view) {
+    public GraphicalObject(int id, int size, Node view) {
         this.id = id;
+        this.size = size;
         this.view = view;
     }
 
@@ -60,17 +62,7 @@ public class GraphicalObject {
         return view.getRotate();
     }
 
-    public void rotateRight() {
-        view.setRotate(view.getRotate() + 5);
-        setVelocity(new Point2D((float) Math.cos(Math.toRadians(getRotate())), (float) Math.sin(Math.toRadians(getRotate()))));
-    }
-
-    public void rotateLeft() {
-        view.setRotate(view.getRotate() - 5);
-        setVelocity(new Point2D((float) Math.cos(Math.toRadians(getRotate())), (float) Math.sin(Math.toRadians(getRotate()))));
-    }
-
-    public boolean isColliding(GraphicalObject other) {
-        return getView().getBoundsInParent().intersects(other.getView().getBoundsInParent());
+    public int getSize() {
+        return size;
     }
 }

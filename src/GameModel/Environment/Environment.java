@@ -17,11 +17,11 @@ public class Environment {
 
     public Environment(int herbivoresNum, int plantsNum) {
         for (int i = 0; i < herbivoresNum; ++i) {
-            herbivores.add(new HerbivoreOrganism(crrId));
+            herbivores.add(new HerbivoreOrganism(crrId, 5 + (int) (Math.random() * 5)));
             crrId++;
         }
         for (int j = 0; j < plantsNum; ++j) {
-            plants.add(new PlantOrganism(crrId));
+            plants.add(new PlantOrganism(crrId, 2 + (int) (Math.random() * 2)));
             crrId++;
         }
     }
@@ -34,21 +34,31 @@ public class Environment {
         ArrayList<PlantOrganism> newDeadPlants = new ArrayList<>();
         // adds new born animals
 
-        for (Organism org : herbivores) {
+        for (HerbivoreOrganism org : herbivores) {
             org.update();
+            if(!org.isAlive()) {
+                newDeadHerbivores.add(org);
+                herbivores.remove(org);
+            }
         }
-        for (Organism org : plants) {
+        for (PlantOrganism org : plants) {
             org.update();
+            if(!org.isAlive()) {
+                newDeadPlants.add(org);
+                herbivores.remove(org);
+            }
         }
         if (Math.random() < 0.01) {
-            PlantOrganism newPlant = new PlantOrganism(crrId);
+            PlantOrganism newPlant = new PlantOrganism(crrId, 2 + (int) (Math.random() * 2));
             plants.add(newPlant);
             newPlants.add(newPlant);
             crrId++;
         }
+        // removes dead elements and notifies observers
+
         // adds new created elements and notifies observers about them
         for (ModelEnvironmentObserver obs : observerApps) {
-            obs.updateState(newHerbivores, newPlants);
+            obs.updateState(newHerbivores, newPlants, newDeadHerbivores, newDeadPlants);
         }
     }
 

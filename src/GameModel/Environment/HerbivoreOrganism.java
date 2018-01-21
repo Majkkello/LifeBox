@@ -7,7 +7,9 @@ import View.ViewFX.Herbivore;
  */
 public class HerbivoreOrganism extends Organism {
 
-    public HerbivoreOrganism(int id) {
-        super(id, Math.random(), Math.random(), 0.0002, 0.0002, 10);
+    private final int lifeTimeExpectancy = 10;
+
+    public HerbivoreOrganism(int id, int size) {
+        super(id, Math.random(), Math.random(), 0.0002, 0.0002, size);
     }
 }
