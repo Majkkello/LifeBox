@@ -16,7 +16,8 @@ public class Organism {
 
     int size;
 
-    public Organism(double positionX, double positionY, double velocityX, double velocityY, int size) {
+    public Organism(int id, double positionX, double positionY, double velocityX, double velocityY, int size) {
+        this.id = id;
         this.positionX = positionX;
         this.positionY = positionY;
         this.velocityX = velocityX;

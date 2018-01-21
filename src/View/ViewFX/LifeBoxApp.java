@@ -3,6 +3,7 @@ package View.ViewFX;
 import GameModel.Environment.Environment;
 import GameModel.Environment.Organism;
 import View.LifeBoxView;
+import View.ModelEnvironmentObserver;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * Created by esromic on 2018-01-20.
  */
-public class LifeBoxApp extends Application implements LifeBoxView {
+public class LifeBoxApp extends Application implements LifeBoxView, ModelEnvironmentObserver {
     private Environment environment = new Environment(5, 10);
     private List<GraphicalObject> plants = new ArrayList<>();
     private List<GraphicalObject> herbivores = new ArrayList<>();
@@ -37,6 +38,11 @@ public class LifeBoxApp extends Application implements LifeBoxView {
         timer.start();
 
         return root;
+    }
+
+    @Override
+    public void updateState() {
+
     }
 
     @Override
@@ -68,12 +74,13 @@ public class LifeBoxApp extends Application implements LifeBoxView {
     }
 
     public void onUpdate() {
-        // get status
-        // draw all objects
+        // invoking update on environment
+        environment.update();
+        // compares lists and creates a list of organisms to be added and adds them
 
-        if (Math.random() < 0.005) {
-            addGraphicalObject(new Plant(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());
-        }
+        // updates positions of all objects
+
+        // draws objects in new positions
     }
 
     public void addGraphicalObject(GraphicalObject obj, double x, double y) {
@@ -84,13 +91,13 @@ public class LifeBoxApp extends Application implements LifeBoxView {
 
     public void addAllGraphicalObjects() {
         for (Organism org : environment.getPlants()) {
-            plants.add(new Plant());
+            plants.add(new Plant(org.getId()));
             addGraphicalObject(plants.get(plants.size() - 1),
                     org.getPositionX() * root.getPrefWidth(),
                     org.getPositionY() * root.getPrefHeight());
         }
         for (Organism org : environment.getHerbivores()) {
-            herbivores.add(new Herbivore());
+            herbivores.add(new Herbivore(org.getId()));
             addGraphicalObject(herbivores.get(herbivores.size() - 1),
                     org.getPositionX() * root.getPrefWidth(),
                     org.getPositionY() * root.getPrefHeight());

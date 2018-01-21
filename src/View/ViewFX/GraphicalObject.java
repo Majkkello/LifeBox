@@ -7,12 +7,14 @@ import javafx.scene.Node;
  * Created by esromic on 2018-01-21.
  */
 public class GraphicalObject {
+    private int id;
     private Node view;
     private Point2D velocity = new Point2D(0, 0);
 
     private boolean alive = true;
 
-    public GraphicalObject(Node view) {
+    public GraphicalObject(int id, Node view) {
+        this.id = id;
         this.view = view;
     }
 
