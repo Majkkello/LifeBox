@@ -1,8 +1,9 @@
-package View;
+package View.ViewFX;
 
+import View.LifeBoxView;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -18,6 +19,14 @@ public class LifeBoxApp extends Application implements LifeBoxView {
     private Parent createContent() {
         root = new Pane();
         root.setPrefSize(800, 800);
+
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                onUpdate();
+            }
+        };
+        timer.start();
 
         return root;
     }
@@ -36,6 +45,11 @@ public class LifeBoxApp extends Application implements LifeBoxView {
     }
 
     @Override
+    public void stop() {
+        System.out.println("Quiting...");
+    }
+
+    @Override
     public void start(Stage stage) {
         LifeBoxApp.stage = stage;
         LifeBoxApp.stage.setTitle("Life Box");
@@ -44,9 +58,18 @@ public class LifeBoxApp extends Application implements LifeBoxView {
         LifeBoxApp.stage.show();
     }
 
-    @Override
-    public void stop() {
-        System.out.println("Quiting...");
+    public void onUpdate() {
+        // get status
+        // draw all objects
+        if (Math.random() < 0.005) {
+            addGraphicalObject(new Herbivore(), Math.random() * root.getPrefWidth(), Math.random() * root.getPrefHeight());
+        }
+    }
+
+    public void addGraphicalObject(GraphicalObject obj, double x, double y) {
+        obj.getView().setTranslateX(x);
+        obj.getView().setTranslateY(y);
+        root.getChildren().add(obj.getView());
     }
 
 }

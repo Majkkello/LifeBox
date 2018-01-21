@@ -6,11 +6,11 @@ import java.util.concurrent.CompletableFuture;
 /**
  * Created by esromic on 2018-01-20.
  */
-public class ExitCommand implements Command {
+public class CloseCommand implements Command {
     CompletableFuture<Boolean> stopThread;
     LifeBoxView lifeBoxView;
 
-    public ExitCommand(LifeBoxView lifeBoxView, CompletableFuture<Boolean> completableFuture) {
+    public CloseCommand(LifeBoxView lifeBoxView, CompletableFuture<Boolean> completableFuture) {
         this.lifeBoxView = lifeBoxView;
         stopThread = completableFuture;
     }
@@ -19,7 +19,6 @@ public class ExitCommand implements Command {
     public void execute() throws Exception {
         lifeBoxView.closeApp();
         //stopThread.thenApply(a -> lifeBoxView.closeApp());
-        System.exit(0);
     }
 
     @Override

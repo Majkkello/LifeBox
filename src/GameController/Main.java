@@ -1,8 +1,6 @@
 package GameController;
 
 import GameController.CommandLine.CommandListener;
-import View.LifeBoxApp;
-import javafx.application.Application;
 
 /**
  * Created by esromic on 2018-01-20.

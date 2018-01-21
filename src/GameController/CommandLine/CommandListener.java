@@ -1,8 +1,7 @@
 package GameController.CommandLine;
 
-
-import View.LifeBoxApp;
 import View.LifeBoxView;
+import View.ViewFX.LifeBoxApp;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -33,8 +32,11 @@ public class CommandListener {
         if (crrCommand.equals("start")) {
             command = new StartCommand(lifeBoxView, graphicsThread);
         } else if (crrCommand.equals("stop")) {
+            command = new CloseCommand(lifeBoxView, graphicsThread);
+        } else if (crrCommand.equals("exit")){
             command = new ExitCommand(lifeBoxView, graphicsThread);
-        } else {
+        }
+        else{
             command = new WrongCommand();
         }
         command.execute();
