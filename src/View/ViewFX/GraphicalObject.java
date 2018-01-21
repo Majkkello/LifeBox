@@ -23,6 +23,15 @@ public class GraphicalObject {
         view.setTranslateY(view.getTranslateY() + velocity.y);
     }
 
+    public void update(double xCoord, double yCoord) {
+        view.setTranslateX(xCoord);
+        view.setTranslateY(yCoord);
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public void setVelocity(Point2D velocity) {
         this.velocity = velocity;
     }

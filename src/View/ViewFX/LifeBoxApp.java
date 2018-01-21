@@ -1,7 +1,9 @@
 package View.ViewFX;
 
 import GameModel.Environment.Environment;
+import GameModel.Environment.HerbivoreOrganism;
 import GameModel.Environment.Organism;
+import GameModel.Environment.PlantOrganism;
 import View.LifeBoxView;
 import View.ModelEnvironmentObserver;
 import javafx.animation.AnimationTimer;
@@ -27,7 +29,8 @@ public class LifeBoxApp extends Application implements LifeBoxView, ModelEnviron
 
     private Parent createContent() {
         root = new Pane();
-        root.setPrefSize(800, 800);
+        root.setPrefSize((int) environment.getWidthX() * 800,
+                (int) environment.getWidthX() * 800);
 
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -41,8 +44,19 @@ public class LifeBoxApp extends Application implements LifeBoxView, ModelEnviron
     }
 
     @Override
-    public void updateState() {
-
+    public void updateState(ArrayList<HerbivoreOrganism> newHerbivores, ArrayList<PlantOrganism> newPlants) {
+        for (Organism org : newPlants) {
+            plants.add(new Plant(org.getId()));
+            addGraphicalObject(plants.get(plants.size() - 1),
+                    org.getPositionX() * root.getPrefWidth(),
+                    org.getPositionY() * root.getPrefHeight());
+        }
+        for (Organism org : newHerbivores) {
+            herbivores.add(new Herbivore(org.getId()));
+            addGraphicalObject(herbivores.get(herbivores.size() - 1),
+                    org.getPositionX() * root.getPrefWidth(),
+                    org.getPositionY() * root.getPrefHeight());
+        }
     }
 
     @Override
@@ -65,6 +79,7 @@ public class LifeBoxApp extends Application implements LifeBoxView, ModelEnviron
 
     @Override
     public void start(Stage stage) {
+        environment.addObserverApp(this);
         LifeBoxApp.stage = stage;
         LifeBoxApp.stage.setTitle("Life Box");
         LifeBoxApp.stage.setScene(new Scene(createContent()));
@@ -73,13 +88,29 @@ public class LifeBoxApp extends Application implements LifeBoxView, ModelEnviron
         LifeBoxApp.stage.show();
     }
 
+    Organism findOrganismWithId(int id) {
+        for (Organism org : environment.getHerbivores()) {
+            if (org.getId() == id)
+                return org;
+        }
+        return null;
+    }
+
+    private void updateCoords(GraphicalObject graphicalObject) {
+        Organism org = findOrganismWithId(graphicalObject.getId());
+        graphicalObject.update(org.getPositionX() * root.getPrefWidth(),
+                org.getPositionY() * root.getPrefHeight());
+    }
+
     public void onUpdate() {
         // invoking update on environment
         environment.update();
         // compares lists and creates a list of organisms to be added and adds them
-
+        // DONE by an observer pattern
         // updates positions of all objects
-
+        for (GraphicalObject go : herbivores) {
+            updateCoords(go);
+        }
         // draws objects in new positions
     }
 

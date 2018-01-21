@@ -8,6 +8,6 @@ import View.ViewFX.Herbivore;
 public class HerbivoreOrganism extends Organism {
 
     public HerbivoreOrganism(int id) {
-        super(id, Math.random(), Math.random(), 0.001, 0.001, 10);
+        super(id, Math.random(), Math.random(), 0.0002, 0.0002, 10);
     }
 }

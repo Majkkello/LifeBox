@@ -29,8 +29,8 @@ public class Organism {
         positionX += velocityX;
         positionY += velocityY;
 
-        velocityX += (Math.random() - 0.5) / 100.0;
-        velocityY += (Math.random() - 0.5) / 100.0;
+        velocityX += (Math.random() - 0.5) / 10000.0;
+        velocityY += (Math.random() - 0.5) / 10000.0;
     }
 
     public int getId() {
