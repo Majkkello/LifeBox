@@ -8,6 +8,6 @@ import javafx.scene.shape.Circle;
  */
 public class Herbivore extends GraphicalObject {
     public Herbivore() {
-        super(new Circle(12, 12, 12, Color.BROWN));
+        super(new Circle(12, 12, 15, Color.BROWN));
     }
 }
