@@ -21,7 +21,7 @@ import java.util.List;
  * Created by esromic on 2018-01-20.
  */
 public class LifeBoxApp extends Application implements LifeBoxView, ModelEnvironmentObserver {
-    private Environment environment = new Environment(5, 10);
+    private Environment environment = new Environment(10, 10);
     private List<GraphicalObject> plants = new ArrayList<>();
     private List<GraphicalObject> herbivores = new ArrayList<>();
     private Pane root;

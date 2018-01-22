@@ -81,7 +81,7 @@ public abstract class Organism {
     public void updateBeingDeadOfAge() {
         if (age > lifeExpectancy) {
             kill();
-            System.out.println("Died of age.");
+            //System.out.println("Died of age.");
         }
     }
 

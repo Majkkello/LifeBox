@@ -1,7 +1,5 @@
 package GameModel.Environment;
 
-import View.ViewFX.Herbivore;
-
 import java.util.ArrayList;
 
 /**
@@ -21,7 +19,7 @@ public class HerbivoreOrganism extends Organism {
     public HerbivoreOrganism(int id, int size) {
         super(id, Math.random(), Math.random(), 0.0, 0.0, size);
         this.age = (int) (Math.random() * 100);
-        this.nourishmentLevel = Math.random() / 1.1;
+        this.nourishmentLevel = Math.random() + 0.1;
         lifeExpectancy = 100;
         hungerCoefficient = 0.5 + Math.random() / 2.0;
         matingCoefficient = Math.random();
@@ -52,12 +50,13 @@ public class HerbivoreOrganism extends Organism {
         for (PlantOrganism org : plants) {
             distance = getDistanceTo(org);
             if (distance < this.eyeSight) {
-                func = ((0.8 * hungerCoefficient + 0.2 * nourishmentLevel) / 2.0) * (1.0 - distance);
+                func = ((0.5 * hungerCoefficient + 0.5 * nourishmentLevel) / 2.0) * (1.0 - distance);
+                //System.out.println(distance);
                 if (func > maxResult) {
                     maxResult = func;
                     //System.out.println("hunger coeff: " + func);
                     desired = org;//new Vector2D(or
-                     // g.positionX, org.positionY);
+                    // g.positionX, org.positionY);
                 }
             }
         }
@@ -86,10 +85,15 @@ public class HerbivoreOrganism extends Organism {
         newBorn.setMatingCoefficient((this.matingCoefficient + partnerTmp.matingCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
         newBorn.setNourishmentLevel((this.nourishmentLevel + partnerTmp.nourishmentLevel / 2.0));
         newBorn.setEyeSight(((this.eyeSight + partner.eyeSight) / 2.0) + (Math.random() - 0.5) / 20.0);
+        //System.out.println(newBorn.eyeSight);
 
         return newBorn;
     }
 
+
+    public void setMatedRecently(boolean matedRecently) {
+        this.matedRecently = matedRecently;
+    }
 
     @Override
     public Organism update(ArrayList<HerbivoreOrganism> herbivores, ArrayList<PlantOrganism> plants, int id) {
@@ -101,19 +105,18 @@ public class HerbivoreOrganism extends Organism {
             if (getDistanceTo(desiredOrg) < interactionDistance && desiredOrg.getType().equals("herbivore")) {
                 newBorn = createNewMember((HerbivoreOrganism) desiredOrg, id);
                 matedRecently = true;
+                ((HerbivoreOrganism) desiredOrg).setMatedRecently(true);
                 matingCount = 0;
-                System.out.println("mating");
-            }
-            else if (getDistanceTo(desiredOrg) < interactionDistance && desiredOrg.getType().equals("plant")) {
+                //System.out.println("mating");
+            } else if (getDistanceTo(desiredOrg) < interactionDistance && desiredOrg.getType().equals("plant")) {
                 desiredOrg.kill();
-                System.out.println("killing a plant!");
+                //System.out.println("killing a plant!");
                 nourishmentLevel += ((desiredOrg.getSize() / 100.0) * 2.0) % 1.0;
+            } else {
+                velocityX = (desiredOrg.getPositionX() - this.getPositionX());//(Math.random() - 0.5) / 10000.0;
+                velocityY = (desiredOrg.getPositionY() - this.getPositionY());
             }
-
-            velocityX = (desiredOrg.getPositionX() - this.getPositionX());//(Math.random() - 0.5) / 10000.0;
-            velocityY = (desiredOrg.getPositionY() - this.getPositionY());
-        }
-        else {
+        } else {
             velocityX += (Math.random() - 0.5) / 10000.0;
             velocityY += (Math.random() - 0.5) / 10000.0;
         }
@@ -130,10 +133,10 @@ public class HerbivoreOrganism extends Organism {
         positionX += velocityX;
         positionY += velocityY;
 
-        nourishmentLevel -= this.size * 0.00001;
+        nourishmentLevel -= this.size * (0.001 / 60.0);
         if (nourishmentLevel <= 0.0) {
             this.kill();
-            System.out.println("died of starvation");
+            //System.out.println("died of starvation");
         }
 
         return newBorn;
@@ -145,7 +148,7 @@ public class HerbivoreOrganism extends Organism {
         matingCount = (matingCount + 1);
         if (matingCount > 10)
             matingCount = 10;
-        if(matingCount == 10)
+        if (matingCount == 10)
             matedRecently = false;
     }
 
