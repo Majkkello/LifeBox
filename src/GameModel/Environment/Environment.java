@@ -68,6 +68,7 @@ public class Environment {
 
         // adds new created elements and notifies observers about them
         herbivores.addAll(newHerbivores);
+        plants.addAll(newPlants);
 
         for (ModelEnvironmentObserver obs : observerApps) {
             obs.updateState(newHerbivores, newPlants, newDeadHerbivores, newDeadPlants);
