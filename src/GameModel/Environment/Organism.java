@@ -79,8 +79,10 @@ public abstract class Organism {
     }
 
     public void updateBeingDeadOfAge() {
-        if (age > lifeExpectancy)
+        if (age > lifeExpectancy) {
             kill();
+            System.out.println("Died of age.");
+        }
     }
 
     public void kill() {
@@ -124,4 +126,7 @@ public abstract class Organism {
     public void setSize(int size) {
         this.size = size;
     }
+
+    public abstract Organism createNewMember(Organism partner, int id);
+
 }

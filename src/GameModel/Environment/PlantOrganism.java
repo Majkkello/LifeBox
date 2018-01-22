@@ -27,4 +27,9 @@ public class PlantOrganism extends Organism {
         return "plant";
     }
 
+    @Override
+    public Organism createNewMember(Organism partner, int id) {
+        return null;
+    }
+
 }

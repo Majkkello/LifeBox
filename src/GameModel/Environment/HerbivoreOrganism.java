@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class HerbivoreOrganism extends Organism {
 
-    private final double interactionDistance = 1.0 / 100.0;
+    private final double interactionDistance = 1.0 / 50.0;
     private final double maxSpeed = (0.08) / 60.0;
 
     private double hungerCoefficient;
@@ -19,13 +19,13 @@ public class HerbivoreOrganism extends Organism {
     private int matingCount = 0;
 
     public HerbivoreOrganism(int id, int size) {
-        super(id, Math.random(), Math.random(), 0.0002, 0.0002, size);
+        super(id, Math.random(), Math.random(), 0.0, 0.0, size);
         this.age = (int) (Math.random() * 100);
         this.nourishmentLevel = Math.random() / 1.1;
         lifeExpectancy = 100;
-        hungerCoefficient = Math.random();
+        hungerCoefficient = 0.5 + Math.random() / 2.0;
         matingCoefficient = Math.random();
-        eyeSight = 1.0 / 7.0;
+        eyeSight = (0.5 + Math.random() / 2.0) / 10.0;
         matedRecently = false;
     }
 
@@ -41,6 +41,8 @@ public class HerbivoreOrganism extends Organism {
                     if (distance < this.eyeSight) {
                         func = matingCoefficient * (1.0 - distance);
                         if (func > maxResult) {
+                            maxResult = func;
+                            //System.out.println("mating coeff: "+ func);
                             desired = org;//new Vector2D(org.positionX, org.positionY);
                         }
                     }
@@ -52,7 +54,10 @@ public class HerbivoreOrganism extends Organism {
             if (distance < this.eyeSight) {
                 func = ((0.8 * hungerCoefficient + 0.2 * nourishmentLevel) / 2.0) * (1.0 - distance);
                 if (func > maxResult) {
-                    desired = org;//new Vector2D(org.positionX, org.positionY);
+                    maxResult = func;
+                    //System.out.println("hunger coeff: " + func);
+                    desired = org;//new Vector2D(or
+                     // g.positionX, org.positionY);
                 }
             }
         }
@@ -68,16 +73,18 @@ public class HerbivoreOrganism extends Organism {
     }
 
     // it is a factory method
-    public HerbivoreOrganism mate(HerbivoreOrganism partner, int id) {
+    @Override
+    public Organism createNewMember(Organism partner, int id) {
         HerbivoreOrganism newBorn = new HerbivoreOrganism(id + 1, (this.getSize() + partner.getSize()) / 2);
+        HerbivoreOrganism partnerTmp = (HerbivoreOrganism) partner;
         newBorn.setAge(0);
         newBorn.setPositionX(this.positionX);
         newBorn.setPositionY(this.positionY);
         newBorn.setVelocityX(0.0);
         newBorn.setVelocityY(0.0);
-        newBorn.setHungerCoefficient((this.hungerCoefficient + partner.hungerCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
-        newBorn.setMatingCoefficient((this.matingCoefficient + partner.matingCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
-        newBorn.setNourishmentLevel((this.nourishmentLevel + partner.nourishmentLevel / 2));
+        newBorn.setHungerCoefficient((this.hungerCoefficient + partnerTmp.hungerCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
+        newBorn.setMatingCoefficient((this.matingCoefficient + partnerTmp.matingCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
+        newBorn.setNourishmentLevel((this.nourishmentLevel + partnerTmp.nourishmentLevel / 2.0));
 
         return newBorn;
     }
@@ -91,17 +98,19 @@ public class HerbivoreOrganism extends Organism {
 
         if (desiredOrg != null) {
             if (getDistanceTo(desiredOrg) < interactionDistance && desiredOrg.getType().equals("herbivore")) {
-                newBorn = mate((HerbivoreOrganism) desiredOrg, id);
+                newBorn = createNewMember((HerbivoreOrganism) desiredOrg, id);
                 matedRecently = true;
                 matingCount = 0;
+                System.out.println("mating");
             }
             else if (getDistanceTo(desiredOrg) < interactionDistance && desiredOrg.getType().equals("plant")) {
                 desiredOrg.kill();
+                System.out.println("killing a plant!");
                 nourishmentLevel += ((desiredOrg.getSize() / 100.0) * 2.0) % 1.0;
             }
 
-            velocityX = 0.6 * velocityX + 0.4 * (desiredOrg.velocityX - this.getPositionX());//(Math.random() - 0.5) / 10000.0;
-            velocityY = 0.6 * velocityY + 0.4 * (desiredOrg.getPositionY() - this.getPositionY());
+            velocityX = (desiredOrg.getPositionX() - this.getPositionX());//(Math.random() - 0.5) / 10000.0;
+            velocityY = (desiredOrg.getPositionY() - this.getPositionY());
         }
         else {
             velocityX += (Math.random() - 0.5) / 10000.0;
@@ -121,8 +130,10 @@ public class HerbivoreOrganism extends Organism {
         positionY += velocityY;
 
         nourishmentLevel -= this.size * 0.00001;
-        if (nourishmentLevel <= 0.0)
+        if (nourishmentLevel <= 0.0) {
             this.kill();
+            System.out.println("died of starvation");
+        }
 
         return newBorn;
     }
@@ -133,7 +144,7 @@ public class HerbivoreOrganism extends Organism {
         matingCount = (matingCount + 1);
         if (matingCount > 10)
             matingCount = 10;
-        if(matingCount > 6)
+        if(matingCount == 10)
             matedRecently = false;
     }
 
