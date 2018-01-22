@@ -34,11 +34,12 @@ public abstract class Organism {
         this.isAlive = true;
     }
 
-    public abstract void update(ArrayList<HerbivoreOrganism> herbivores, ArrayList<PlantOrganism> plants);
+    public abstract Organism update(ArrayList<HerbivoreOrganism> herbivores, ArrayList<PlantOrganism> plants, int id);
 
 
 
-    //public abstract void react();
+
+//public abstract void react();
 
     public int getId() {
         return id;
@@ -84,5 +85,43 @@ public abstract class Organism {
 
     public void kill() {
         isAlive = false;
+    }
+
+    public abstract String getType();
+
+    public void setLifeExpectancy(int lifeExpectancy) {
+        this.lifeExpectancy = lifeExpectancy;
+    }
+
+    public void setPositionX(double positionX) {
+        this.positionX = positionX;
+    }
+
+    public void setPositionY(double positionY) {
+        this.positionY = positionY;
+    }
+
+    public void setVelocityX(double velocityX) {
+        this.velocityX = velocityX;
+    }
+
+    public void setVelocityY(double velocityY) {
+        this.velocityY = velocityY;
+    }
+
+    public void setEyeSight(double eyeSight) {
+        this.eyeSight = eyeSight;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setAlive(boolean alive) {
+        isAlive = alive;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

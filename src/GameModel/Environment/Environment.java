@@ -38,7 +38,11 @@ public class Environment {
         // adds new born animals
 
         for (HerbivoreOrganism org : herbivores) {
-            org.update(herbivores, plants);
+            Organism newBorn = org.update(herbivores, plants, crrId);
+            if (newBorn != null) {
+                crrId++;
+                newHerbivores.add((HerbivoreOrganism) newBorn);
+            }
             if (crrUpdateTime == updateNumberPeriod - 1) {
                 org.incrementAge();
             }
@@ -47,7 +51,7 @@ public class Environment {
             }
         }
         for (PlantOrganism org : plants) {
-            org.update(herbivores, plants);
+            org.update(herbivores, plants, crrId);
             if (crrUpdateTime == updateNumberPeriod - 1) {
                 org.incrementAge();
             }
@@ -57,13 +61,14 @@ public class Environment {
         }
         if (Math.random() < 0.01) {
             PlantOrganism newPlant = new PlantOrganism(crrId, 2 + (int) (Math.random() * 2));
-            plants.add(newPlant);
             newPlants.add(newPlant);
             crrId++;
         }
         // removes dead elements and notifies observers
 
         // adds new created elements and notifies observers about them
+        herbivores.addAll(newHerbivores);
+
         for (ModelEnvironmentObserver obs : observerApps) {
             obs.updateState(newHerbivores, newPlants, newDeadHerbivores, newDeadPlants);
         }
