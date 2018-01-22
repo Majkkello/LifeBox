@@ -8,6 +8,6 @@ import javafx.scene.shape.Circle;
  */
 public class Plant extends GraphicalObject {
     public Plant(int id, int size) {
-        super(id, size, new Circle(10, 10, size, Color.GREEN));
+        super(id, size, new Circle(0, 0, size, Color.GREEN));
     }
 }

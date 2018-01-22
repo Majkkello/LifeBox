@@ -1,11 +1,14 @@
 package GameModel.Environment;
 
-import com.sun.org.apache.xpath.internal.operations.Or;
+import com.sun.prism.image.Coords;
+
+import java.util.ArrayList;
 
 /**
  * Created by esromic on 2018-01-21.
  */
 public abstract class Organism {
+    int lifeExpectancy;
     int id;
 
     double positionX;
@@ -31,13 +34,7 @@ public abstract class Organism {
         this.isAlive = true;
     }
 
-    public void update() {
-        positionX += velocityX;
-        positionY += velocityY;
-
-        velocityX += (Math.random() - 0.5) / 10000.0;
-        velocityY += (Math.random() - 0.5) / 10000.0;
-    }
+    public abstract void update(ArrayList<HerbivoreOrganism> herbivores, ArrayList<PlantOrganism> plants);
 
 
 
@@ -69,5 +66,23 @@ public abstract class Organism {
 
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public double getDistanceTo(Organism org) {
+        return Math.sqrt(Math.pow(org.getPositionX() - this.getPositionX(), 2) + Math.pow(org.getPositionY() - this.getPositionY(), 2));
+    }
+
+    public void incrementAge() {
+        this.age++;
+        updateBeingDeadOfAge();
+    }
+
+    public void updateBeingDeadOfAge() {
+        if (age > lifeExpectancy)
+            kill();
+    }
+
+    public void kill() {
+        isAlive = false;
     }
 }

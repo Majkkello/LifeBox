@@ -10,6 +10,8 @@ import java.util.ArrayList;
 public class Environment {
     private final double widthX = 1.0;
     private final double heightY = 1.0;
+    private final int updateNumberPeriod = 100;
+    private int crrUpdateTime = 0;
     private ArrayList<HerbivoreOrganism> herbivores = new ArrayList<>();
     private ArrayList<PlantOrganism> plants = new ArrayList<>();
     private int crrId = 0;
@@ -29,23 +31,28 @@ public class Environment {
     public void update() {
         ArrayList<HerbivoreOrganism> newHerbivores = new ArrayList<>();
         ArrayList<PlantOrganism> newPlants = new ArrayList<>();
-        // TODO: add dying functionality
+        // TODO: add eating plants
+        // TODO: add reasoning in taking a path
         ArrayList<HerbivoreOrganism> newDeadHerbivores = new ArrayList<>();
         ArrayList<PlantOrganism> newDeadPlants = new ArrayList<>();
         // adds new born animals
 
         for (HerbivoreOrganism org : herbivores) {
-            org.update();
-            if(!org.isAlive()) {
+            org.update(herbivores, plants);
+            if (crrUpdateTime == updateNumberPeriod - 1) {
+                org.incrementAge();
+            }
+            if (!org.isAlive()) {
                 newDeadHerbivores.add(org);
-                herbivores.remove(org);
             }
         }
         for (PlantOrganism org : plants) {
-            org.update();
-            if(!org.isAlive()) {
+            org.update(herbivores, plants);
+            if (crrUpdateTime == updateNumberPeriod - 1) {
+                org.incrementAge();
+            }
+            if (!org.isAlive()) {
                 newDeadPlants.add(org);
-                herbivores.remove(org);
             }
         }
         if (Math.random() < 0.01) {
@@ -60,6 +67,11 @@ public class Environment {
         for (ModelEnvironmentObserver obs : observerApps) {
             obs.updateState(newHerbivores, newPlants, newDeadHerbivores, newDeadPlants);
         }
+
+        herbivores.removeAll(newDeadHerbivores);
+        plants.removeAll(newDeadPlants);
+
+        crrUpdateTime = (crrUpdateTime + 1) % updateNumberPeriod;
     }
 
     public void addObserverApp(ModelEnvironmentObserver obs) {
