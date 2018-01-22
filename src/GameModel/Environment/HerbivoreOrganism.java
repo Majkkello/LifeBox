@@ -136,7 +136,7 @@ public class HerbivoreOrganism extends Organism {
         positionX += velocityX;
         positionY += velocityY;
 
-        nourishmentLevel -= this.size * (0.001 / 60.0);
+        nourishmentLevel -= this.size * (0.002 / 60.0);
         if (nourishmentLevel <= 0.01) {
             this.kill();
             //System.out.println("died of starvation");
