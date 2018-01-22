@@ -9,8 +9,8 @@ import java.util.ArrayList;
  */
 public class HerbivoreOrganism extends Organism {
 
-    private final double interactionDistance = 1.0 / 50.0;
-    private final double maxSpeed = (0.08) / 60.0;
+    private final double interactionDistance = 1.0 / 100.0;
+    private final double maxSpeed = (0.05) / 60.0;
 
     private double hungerCoefficient;
     private double matingCoefficient;
@@ -25,7 +25,7 @@ public class HerbivoreOrganism extends Organism {
         lifeExpectancy = 100;
         hungerCoefficient = 0.5 + Math.random() / 2.0;
         matingCoefficient = Math.random();
-        eyeSight = (0.5 + Math.random() / 2.0) / 10.0;
+        eyeSight = (0.5 + Math.random() / 2.0) / 7.0;
         matedRecently = false;
     }
 
@@ -85,6 +85,7 @@ public class HerbivoreOrganism extends Organism {
         newBorn.setHungerCoefficient((this.hungerCoefficient + partnerTmp.hungerCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
         newBorn.setMatingCoefficient((this.matingCoefficient + partnerTmp.matingCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
         newBorn.setNourishmentLevel((this.nourishmentLevel + partnerTmp.nourishmentLevel / 2.0));
+        newBorn.setEyeSight(((this.eyeSight + partner.eyeSight) / 2.0) + (Math.random() - 0.5) / 20.0);
 
         return newBorn;
     }

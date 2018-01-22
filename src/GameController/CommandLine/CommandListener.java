@@ -2,6 +2,7 @@ package GameController.CommandLine;
 
 import View.LifeBoxView;
 import View.ViewFX.LifeBoxApp;
+import com.sun.org.apache.xpath.internal.SourceTree;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +20,12 @@ public class CommandListener {
     private List<String> commands = new LinkedList<>();
 
     public CommandListener() {
+        System.out.println("Hi!\n" +
+                "Welcome to Life Box - your sandbox of life!\n" +
+                "List of commands You can use:\n" +
+                "start - open a box full of life\n" +
+                "stop - close the box\n" +
+                "exit - exit the program");
     }
 
     private void getCommand() {
