@@ -20,7 +20,7 @@ public abstract class Organism {
     double eyeSight;
     int age;
 
-    boolean isAlive;
+    private boolean isAlive;
     int size;
 
     public Organism(int id, double positionX, double positionY, double velocityX, double velocityY, int size) {
@@ -35,9 +35,6 @@ public abstract class Organism {
     }
 
     public abstract Organism update(ArrayList<HerbivoreOrganism> herbivores, ArrayList<PlantOrganism> plants, int id);
-
-
-
 
 //public abstract void react();
 
@@ -81,7 +78,8 @@ public abstract class Organism {
     public void updateBeingDeadOfAge() {
         if (age > lifeExpectancy) {
             kill();
-            //System.out.println("Died of age.");
+            if (this.getType().equals("herbivore"))
+                System.out.println("Died of age.");
         }
     }
 

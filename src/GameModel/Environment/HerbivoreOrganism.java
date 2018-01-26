@@ -20,7 +20,7 @@ public class HerbivoreOrganism extends Organism {
         super(id, Math.random(), Math.random(), 0.0, 0.0, size);
         this.age = (int) (Math.random() * 100);
         this.nourishmentLevel = Math.random();
-        lifeExpectancy = 100;
+        lifeExpectancy = 200;
         hungerCoefficient = 0.5 + Math.random() / 2.0;
         matingCoefficient = Math.random();
         eyeSight = (0.5 + Math.random() / 2.0) / 7.0;
@@ -85,7 +85,7 @@ public class HerbivoreOrganism extends Organism {
         newBorn.setVelocityY(0.0);
         newBorn.setHungerCoefficient((this.hungerCoefficient + partnerTmp.hungerCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
         newBorn.setMatingCoefficient((this.matingCoefficient + partnerTmp.matingCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
-        newBorn.setNourishmentLevel((this.nourishmentLevel + partnerTmp.nourishmentLevel / 2.0));
+        newBorn.setNourishmentLevel((this.nourishmentLevel + partnerTmp.nourishmentLevel) / 2.0);
         newBorn.setEyeSight(((this.eyeSight + partner.eyeSight) / 2.0) + (Math.random() - 0.5) / 20.0);
         //System.out.println(newBorn.eyeSight);
 
@@ -101,15 +101,17 @@ public class HerbivoreOrganism extends Organism {
     public Organism update(ArrayList<HerbivoreOrganism> herbivores, ArrayList<PlantOrganism> plants, int id) {
 
         Organism desiredOrg = getDesiredOrg(herbivores, plants);
-        Organism newBorn = null;
+        HerbivoreOrganism newBorn = null;
 
         if (desiredOrg != null) {
             if (getDistanceTo(desiredOrg) < interactionDistance && desiredOrg.getType().equals("herbivore")) {
-                newBorn = createNewMember((HerbivoreOrganism) desiredOrg, id);
+                newBorn = (HerbivoreOrganism) createNewMember(desiredOrg, id);
                 matedRecently = true;
                 ((HerbivoreOrganism) desiredOrg).setMatedRecently(true);
                 matingCount = 0;
-                //System.out.println("mating");
+                System.out.println("Mating stats:\n" + "1st: " + this.getNourishmentLevel()
+                        + "; second: " + ((HerbivoreOrganism) desiredOrg).nourishmentLevel
+                        + "; baby nourishment: " + newBorn.getNourishmentLevel());
             } else if (getDistanceTo(desiredOrg) < interactionDistance && desiredOrg.getType().equals("plant")) {
                 desiredOrg.kill();
                 //System.out.println("killing a plant!");
@@ -136,10 +138,10 @@ public class HerbivoreOrganism extends Organism {
         positionX += velocityX;
         positionY += velocityY;
 
-        nourishmentLevel -= this.size * (0.002 / 60.0);
+        nourishmentLevel -= this.size * (0.0014 / 60.0);
         if (nourishmentLevel <= 0.01) {
             this.kill();
-            //System.out.println("died of starvation");
+            System.out.println("died of starvation");
         }
 
         return newBorn;
@@ -158,6 +160,10 @@ public class HerbivoreOrganism extends Organism {
     @Override
     public String getType() {
         return "herbivore";
+    }
+
+    public double getNourishmentLevel() {
+        return nourishmentLevel;
     }
 
     public void setHungerCoefficient(double hungerCoefficient) {

@@ -10,7 +10,7 @@ public class PlantOrganism extends Organism {
     public PlantOrganism(int id, int size) {
         super(id, (Math.random() + 0.1) / 1.2, (Math.random() + 0.1) / 1.2, 0.0, 0.0, size);
         this.age = (int) (Math.random() * 150);
-        lifeExpectancy = 150;
+        lifeExpectancy = 200;
     }
 
     public void getDesiredCoords(ArrayList<HerbivoreOrganism> herbivores, ArrayList<PlantOrganism> plants) {

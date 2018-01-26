@@ -31,8 +31,6 @@ public class Environment {
     public void update() {
         ArrayList<HerbivoreOrganism> newHerbivores = new ArrayList<>();
         ArrayList<PlantOrganism> newPlants = new ArrayList<>();
-        // TODO: add eating plants
-        // TODO: add reasoning in taking a path
         ArrayList<HerbivoreOrganism> newDeadHerbivores = new ArrayList<>();
         ArrayList<PlantOrganism> newDeadPlants = new ArrayList<>();
         // adds new born animals
@@ -59,7 +57,7 @@ public class Environment {
                 newDeadPlants.add(org);
             }
         }
-        if (Math.random() < 0.01) {
+        if (Math.random() < 0.03) {
             PlantOrganism newPlant = new PlantOrganism(crrId, 2 + (int) (Math.random() * 2));
             newPlants.add(newPlant);
             crrId++;
