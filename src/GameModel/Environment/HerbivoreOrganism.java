@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class HerbivoreOrganism extends Organism {
 
     private final double interactionDistance = 1.0 / 100.0;
-    private final double maxSpeed = (0.05) / 60.0;
+    private final double maxSpeed = (1 / ((double) size * 200));
 
     private double hungerCoefficient;
     private double matingCoefficient;
@@ -23,10 +23,11 @@ public class HerbivoreOrganism extends Organism {
         lifeExpectancy = 200;
         hungerCoefficient = 0.5 + Math.random() / 2.0;
         matingCoefficient = Math.random();
-        eyeSight = (0.5 + Math.random() / 2.0) / 7.0;
+        eyeSight = (0.5 + Math.random() / 2.0) / 10.0;
         matedRecently = false;
     }
 
+    // TODO: add mating function that prefers organisms to mate with similar to them - organisms divide into species
     public Organism getDesiredOrg(ArrayList<HerbivoreOrganism> herbivores, ArrayList<PlantOrganism> plants) {
         double maxResult = 0.0;
         double distance;
@@ -86,7 +87,7 @@ public class HerbivoreOrganism extends Organism {
         newBorn.setHungerCoefficient((this.hungerCoefficient + partnerTmp.hungerCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
         newBorn.setMatingCoefficient((this.matingCoefficient + partnerTmp.matingCoefficient) / 2.0 + (Math.random() - 0.5) / 20.0);
         newBorn.setNourishmentLevel((this.nourishmentLevel + partnerTmp.nourishmentLevel) / 2.0);
-        newBorn.setEyeSight(((this.eyeSight + partner.eyeSight) / 2.0) + (Math.random() - 0.5) / 20.0);
+        newBorn.setEyeSight(((this.eyeSight + partner.eyeSight) / 2.0) + (Math.random() - 0.5) / 1000.0);
         //System.out.println(newBorn.eyeSight);
 
         return newBorn;
@@ -111,7 +112,8 @@ public class HerbivoreOrganism extends Organism {
                 matingCount = 0;
                 System.out.println("Mating stats:\n" + "1st: " + this.getNourishmentLevel()
                         + "; second: " + ((HerbivoreOrganism) desiredOrg).nourishmentLevel
-                        + "; baby nourishment: " + newBorn.getNourishmentLevel());
+                        + "; baby nourishment: " + newBorn.getNourishmentLevel() + " and its eyesight: "
+                        + this.eyeSight + " mating: " + matingCoefficient + "; food desire: " + hungerCoefficient);
             } else if (getDistanceTo(desiredOrg) < interactionDistance && desiredOrg.getType().equals("plant")) {
                 desiredOrg.kill();
                 //System.out.println("killing a plant!");
