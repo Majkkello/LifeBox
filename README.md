@@ -11,4 +11,4 @@ Just run the main function in the Main class (GameController package), type the 
 
 ## Purpose
 
-The project is an example of software design patterns useage... and fun.
+The project is an example of software design patterns useage... and fun. It may/will be improved by adding more advanced behaviors and more complex environment variables. Also user interface should be improved.
